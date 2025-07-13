@@ -69,7 +69,7 @@ export default function Home() {
 
   const handleToggleFavorite = () => {
     if (!weather) return;
-    
+
     const location: StoredLocation = {
       name: weather.name,
       country: weather.country,
@@ -87,7 +87,7 @@ export default function Home() {
     } else {
       addFavoriteLocation(location);
     }
-    
+
     setFavorites(getFavoriteLocations());
   };
 
@@ -96,14 +96,14 @@ export default function Home() {
   );
 
   const renderWeatherParticles = () => {
-    const particleCount = weather?.weather.main.toLowerCase() === 'thunderstorm' ? 50 : 
-                         weather?.weather.main.toLowerCase() === 'rain' ? 35 : 
-                         weather?.weather.main.toLowerCase() === 'snow' ? 25 : 20;
-    
+    const particleCount = weather?.weather.main.toLowerCase() === 'thunderstorm' ? 50 :
+      weather?.weather.main.toLowerCase() === 'rain' ? 35 :
+        weather?.weather.main.toLowerCase() === 'snow' ? 25 : 20;
+
     if (!weather) return null;
-    
+
     const weatherMain = weather.weather.main.toLowerCase();
-    
+
     switch (weatherMain) {
       case 'clear':
         return (
@@ -233,7 +233,7 @@ export default function Home() {
                 }}
               />
             ))}
-            
+
             {/* Realistic raindrops with light reflection */}
             {[...Array(particleCount)].map((_, i) => (
               <motion.div
@@ -257,7 +257,7 @@ export default function Home() {
                 }}
               />
             ))}
-            
+
             {/* Ground splash effects */}
             {[...Array(5)].map((_, i) => (
               <motion.div
@@ -572,7 +572,7 @@ export default function Home() {
                 }}
               />
             ))}
-            
+
             {/* Lightning bolts with dramatic illumination */}
             <motion.div
               className="absolute inset-0 pointer-events-none"
@@ -593,7 +593,7 @@ export default function Home() {
                 repeatDelay: Math.random() * 4 + 2,
               }}
             />
-            
+
             {/* Lightning flash overlay */}
             <motion.div
               className="absolute inset-0 bg-blue-100/30 pointer-events-none"
@@ -606,7 +606,7 @@ export default function Home() {
                 repeatDelay: Math.random() * 6 + 3,
               }}
             />
-            
+
             {/* Jagged lightning bolt */}
             <motion.svg
               className="absolute top-10 left-1/2 transform -translate-x-1/2 pointer-events-none"
@@ -638,7 +638,7 @@ export default function Home() {
                 fill="none"
               />
             </motion.svg>
-            
+
             {/* Heavy rain with lightning illumination */}
             {[...Array(particleCount)].map((_, i) => (
               <motion.div
@@ -663,7 +663,7 @@ export default function Home() {
                 }}
               />
             ))}
-            
+
             {/* Ground impact splashes */}
             {[...Array(8)].map((_, i) => (
               <motion.div
@@ -798,9 +798,19 @@ export default function Home() {
   // Enhanced background animation based on weather
   const getWeatherAnimation = () => {
     if (!weather) return {};
-    
+
     const weatherMain = weather.weather.main.toLowerCase();
-    const animations = {
+
+    const animations: {
+      [key: string]: {
+        background: string[];
+        transition: {
+          duration: number;
+          repeat: number;
+          ease: string;
+        };
+      };
+    } = {
       rain: {
         background: [
           'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
@@ -834,9 +844,10 @@ export default function Home() {
         transition: { duration: 8, repeat: Infinity, ease: "easeInOut" }
       }
     };
-    
+
     return animations[weatherMain] || animations.clear;
   };
+
 
   const containerStyle = theme ? {
     background: theme.background,
@@ -849,7 +860,7 @@ export default function Home() {
 
   return (
     <ErrorBoundary>
-      <motion.div 
+      <motion.div
         style={containerStyle}
         className="relative overflow-hidden"
       >
@@ -889,9 +900,9 @@ export default function Home() {
             transition={{ duration: 0.5 }}
             className="flex items-center justify-between mb-8"
           >
-            <motion.h1 
+            <motion.h1
               className="text-3xl font-bold text-white"
-              whileHover={{ 
+              whileHover={{
                 scale: 1.05,
                 textShadow: "0px 0px 8px rgba(255,255,255,0.8)"
               }}
@@ -1002,7 +1013,7 @@ export default function Home() {
                     className="text-white border-white/30 hover:bg-white/20 bg-white/10 backdrop-blur-sm transition-all duration-300"
                   >
                     <motion.div
-                      animate={isFavorite ? { 
+                      animate={isFavorite ? {
                         scale: [1, 1.2, 1],
                         rotate: [0, 10, -10, 0]
                       } : {}}
@@ -1031,7 +1042,7 @@ export default function Home() {
               </div>
 
               <WeatherCard weather={weather} />
-              
+
               {forecast && forecast.length > 0 && (
                 <ForecastSection forecast={forecast} />
               )}
@@ -1046,14 +1057,14 @@ export default function Home() {
               className="text-center text-white"
             >
               <Card className="bg-white/10 backdrop-blur-sm border-white/20 text-white p-8">
-                <motion.h2 
+                <motion.h2
                   className="text-2xl font-semibold mb-4"
                   animate={{ y: [0, -5, 0] }}
                   transition={{ duration: 2, repeat: Infinity }}
                 >
                   Welcome to Weather App
                 </motion.h2>
-                <motion.p 
+                <motion.p
                   className="text-white/80 mb-6"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
@@ -1065,7 +1076,7 @@ export default function Home() {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
-                  <Button 
+                  <Button
                     onClick={() => setShowLocationDialog(true)}
                     className="bg-white/20 hover:bg-white/30 text-white border-white/30 backdrop-blur-sm transition-all duration-300"
                   >
@@ -1086,7 +1097,7 @@ export default function Home() {
             >
               <Card className="bg-white/10 backdrop-blur-sm border-white/20 text-white">
                 <div className="p-6">
-                  <motion.h3 
+                  <motion.h3
                     className="text-xl font-semibold mb-4"
                     whileHover={{ scale: 1.02 }}
                   >
@@ -1098,8 +1109,8 @@ export default function Home() {
                         key={`${location.lat}-${location.lon}`}
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
-                        whileHover={{ 
-                          scale: 1.05, 
+                        whileHover={{
+                          scale: 1.05,
                           backgroundColor: "rgba(255,255,255,0.15)",
                           boxShadow: "0 4px 20px rgba(0,0,0,0.1)"
                         }}
@@ -1114,12 +1125,12 @@ export default function Home() {
                             <div className="text-sm text-white/80">{location.country}</div>
                           </div>
                           <motion.div
-                            animate={{ 
+                            animate={{
                               scale: [1, 1.2, 1],
                               rotate: [0, 10, -10, 0]
                             }}
-                            transition={{ 
-                              duration: 2, 
+                            transition={{
+                              duration: 2,
                               repeat: Infinity,
                               delay: index * 0.5
                             }}

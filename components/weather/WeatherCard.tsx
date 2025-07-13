@@ -9,6 +9,7 @@ import { getUserPreferences } from '@/lib/storage';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Thermometer, Eye, Wind, Droplets, Sunrise, Sunset } from 'lucide-react';
+import { Target, Transition } from 'framer-motion';
 
 interface WeatherCardProps {
   weather: WeatherData;
@@ -17,7 +18,8 @@ interface WeatherCardProps {
 
 export function WeatherCard({ weather, className = '' }: WeatherCardProps) {
   const [temperatureUnit, setTemperatureUnit] = useState<'celsius' | 'fahrenheit'>('celsius');
-  
+
+
   useEffect(() => {
     const preferences = getUserPreferences();
     setTemperatureUnit(preferences.temperatureUnit);
@@ -31,40 +33,47 @@ export function WeatherCard({ weather, className = '' }: WeatherCardProps) {
   // Weather-specific animations
   const getWeatherAnimation = () => {
     const weatherMain = weather.weather.main.toLowerCase();
-    
+
     switch (weatherMain) {
       case 'rain':
       case 'drizzle':
         return {
-          y: [0, -2, 0],
-          transition: { duration: 1.5, repeat: Infinity, ease: "easeInOut" }
+          motion: { y: [0, -2, 0] },
+          transition: { y: { duration: 1.5, repeat: Infinity, ease: "easeInOut" } }
         };
       case 'thunderstorm':
         return {
-          x: [0, -1, 1, 0],
-          transition: { duration: 0.5, repeat: Infinity }
+          motion: { x: [0, -1, 1, 0] },
+          transition: { x: { duration: 0.5, repeat: Infinity } }
         };
       case 'snow':
         return {
-          y: [0, -3, 0],
-          rotate: [0, 2, -2, 0],
-          transition: { duration: 3, repeat: Infinity, ease: "easeInOut" }
+          motion: { y: [0, -3, 0], rotate: [0, 2, -2, 0] },
+          transition: {
+            y: { duration: 3, repeat: Infinity, ease: "easeInOut" },
+            rotate: { duration: 3, repeat: Infinity, ease: "easeInOut" }
+          }
         };
       case 'clear':
         return {
-          scale: [1, 1.05, 1],
-          rotate: [0, 5, -5, 0],
-          transition: { duration: 4, repeat: Infinity, ease: "easeInOut" }
+          motion: { scale: [1, 1.05, 1], rotate: [0, 5, -5, 0] },
+          transition: {
+            scale: { duration: 4, repeat: Infinity, ease: "easeInOut" },
+            rotate: { duration: 4, repeat: Infinity, ease: "easeInOut" }
+          }
         };
       case 'clouds':
         return {
-          x: [0, 2, -2, 0],
-          transition: { duration: 6, repeat: Infinity, ease: "easeInOut" }
+          motion: { x: [0, 2, -2, 0] },
+          transition: { x: { duration: 6, repeat: Infinity, ease: "easeInOut" } }
         };
       default:
-        return {};
+        return { motion: {}, transition: {} };
     }
   };
+
+
+  const { motion: weatherMotion, transition: weatherTransition } = getWeatherAnimation();
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.9 }}
@@ -99,7 +108,7 @@ export function WeatherCard({ weather, className = '' }: WeatherCardProps) {
               ))}
             </>
           )}
-          
+
           {weather.weather.main.toLowerCase() === 'snow' && (
             <>
               {[...Array(20)].map((_, i) => (
@@ -136,24 +145,27 @@ export function WeatherCard({ weather, className = '' }: WeatherCardProps) {
               <h2 className="text-2xl font-bold">{weather.name}</h2>
               <p className="text-white/80">{weather.country}</p>
             </motion.div>
+
             <motion.div
               initial={{ scale: 0, rotate: -180 }}
-              animate={{ scale: 1, rotate: 0, ...getWeatherAnimation() }}
-              transition={{ 
-                type: "spring", 
-                stiffness: 260, 
+              animate={{ scale: 1, rotate: 0, ...weatherMotion }}
+              transition={{
+                type: "spring",
+                stiffness: 260,
                 damping: 20,
-                delay: 0.2
+                delay: 0.2,
+                ...weatherTransition,
               }}
               className="text-4xl cursor-pointer"
               whileHover={{ scale: 1.2, rotate: 15 }}
             >
               {weatherIcon}
             </motion.div>
+
           </div>
 
           <div className="grid grid-cols-2 gap-4 mb-6">
-            <motion.div 
+            <motion.div
               className="text-center"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -169,7 +181,7 @@ export function WeatherCard({ weather, className = '' }: WeatherCardProps) {
               >
                 {formatTemperature(weather.temp, temperatureUnit)}
               </motion.div>
-              <motion.p 
+              <motion.p
                 className="text-sm text-white/80"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -178,22 +190,22 @@ export function WeatherCard({ weather, className = '' }: WeatherCardProps) {
                 Feels like {formatTemperature(weather.feels_like, temperatureUnit)}
               </motion.p>
             </motion.div>
-          
-            <motion.div 
+
+            <motion.div
               className="text-center"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4 }}
             >
-              <motion.div 
+              <motion.div
                 className="text-lg font-semibold mb-1"
                 whileHover={{ scale: 1.05 }}
               >
-                {weather.weather.description.split(' ').map(word => 
+                {weather.weather.description.split(' ').map(word =>
                   word.charAt(0).toUpperCase() + word.slice(1)
                 ).join(' ')}
               </motion.div>
-              <motion.div 
+              <motion.div
                 className="text-sm text-white/80"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -211,7 +223,7 @@ export function WeatherCard({ weather, className = '' }: WeatherCardProps) {
               transition={{ delay: 0.5 }}
               className="space-y-3"
             >
-              <motion.div 
+              <motion.div
                 className="flex items-center gap-2"
                 whileHover={{ x: 5, scale: 1.02 }}
                 transition={{ type: "spring", stiffness: 300 }}
@@ -224,7 +236,7 @@ export function WeatherCard({ weather, className = '' }: WeatherCardProps) {
                 </motion.div>
                 <span className="text-sm">Humidity: {weather.humidity}%</span>
               </motion.div>
-              <motion.div 
+              <motion.div
                 className="flex items-center gap-2"
                 whileHover={{ x: 5, scale: 1.02 }}
                 transition={{ type: "spring", stiffness: 300 }}
@@ -239,7 +251,7 @@ export function WeatherCard({ weather, className = '' }: WeatherCardProps) {
                   Wind: {formatWindSpeed(weather.wind_speed)} {getWindDirection(weather.wind_deg)}
                 </span>
               </motion.div>
-              <motion.div 
+              <motion.div
                 className="flex items-center gap-2"
                 whileHover={{ x: 5, scale: 1.02 }}
                 transition={{ type: "spring", stiffness: 300 }}
@@ -262,7 +274,7 @@ export function WeatherCard({ weather, className = '' }: WeatherCardProps) {
               transition={{ delay: 0.6 }}
               className="space-y-3"
             >
-              <motion.div 
+              <motion.div
                 className="flex items-center gap-2"
                 whileHover={{ x: -5, scale: 1.02 }}
                 transition={{ type: "spring", stiffness: 300 }}
@@ -275,7 +287,7 @@ export function WeatherCard({ weather, className = '' }: WeatherCardProps) {
                 </motion.div>
                 <span className="text-sm">Pressure: {weather.pressure} hPa</span>
               </motion.div>
-              <motion.div 
+              <motion.div
                 className="flex items-center gap-2"
                 whileHover={{ x: -5, scale: 1.02 }}
                 transition={{ type: "spring", stiffness: 300 }}
@@ -290,7 +302,7 @@ export function WeatherCard({ weather, className = '' }: WeatherCardProps) {
                   Sunrise: {formatTime(weather.sunrise, weather.timezone)}
                 </span>
               </motion.div>
-              <motion.div 
+              <motion.div
                 className="flex items-center gap-2"
                 whileHover={{ x: -5, scale: 1.02 }}
                 transition={{ type: "spring", stiffness: 300 }}

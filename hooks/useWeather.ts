@@ -25,17 +25,17 @@ export function useWeather() {
   const fetchWeatherData = useCallback(async (lat: number, lon: number) => {
     console.log('useWeather: fetchWeatherData called with:', lat, lon);
     setState(prev => ({ ...prev, loading: true, error: null }));
-    
+
     try {
       console.log('useWeather: Starting weather data fetch...');
       const [weatherData, forecastData] = await Promise.all([
         getCurrentWeather(lat, lon),
         getForecast(lat, lon)
       ]);
-      
+
       console.log('useWeather: Weather data received:', weatherData);
       console.log('useWeather: Forecast data received:', forecastData);
-      
+
       setState(prev => ({
         ...prev,
         weather: weatherData,
@@ -56,27 +56,21 @@ export function useWeather() {
   const fetchUserLocationWeather = useCallback(async () => {
     console.log('useWeather: fetchUserLocationWeather called');
     setState(prev => ({ ...prev, loading: true, error: null }));
-    
+
     try {
       console.log('useWeather: Getting user location...');
       const location = await getUserLocation();
       console.log('useWeather: User location received:', location);
       await fetchWeatherData(location.lat, location.lon);
-    } catch (error) {
-      console.error('useWeather: Error getting user location:', error);
-      if (error instanceof GeolocationError) {
-        setState(prev => ({
-          ...prev,
-          error: error.message,
-          loading: false
-        }));
-      } else {
-        setState(prev => ({
-          ...prev,
-          error: 'Failed to get your location. Please search for a city instead.',
-          loading: false
-        }));
-      }
+    }
+
+    catch (error) {
+      console.error('useWeather: Error fetching weather data:', error);
+      setState(prev => ({
+        ...prev,
+        error: error instanceof Error ? error.message : 'Failed to fetch weather data',
+        loading: false
+      }));
     }
   }, [fetchWeatherData]);
 
@@ -96,7 +90,7 @@ export function useWeather() {
     console.log('useWeather: useEffect triggered');
     const preferences = getUserPreferences();
     console.log('useWeather: User preferences:', preferences);
-    
+
     if (preferences.autoLocation) {
       console.log('useWeather: Auto-location enabled, fetching user location weather');
       fetchUserLocationWeather();
