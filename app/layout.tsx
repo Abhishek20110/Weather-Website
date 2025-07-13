@@ -6,10 +6,10 @@ import { ErrorBoundary } from '@/components/weather/ErrorBoundary';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'Weather App - Real-time Weather Updates',
+  title: 'Ghonchu Weather - Real-time Weather Updates',
   description: 'Get accurate weather forecasts, current conditions, and weather alerts for any location worldwide.',
   keywords: 'weather, forecast, temperature, humidity, wind, precipitation, alerts',
-  authors: [{ name: 'Weather App' }],
+  authors: [{ name: 'Ghonchu Weather' }],
   viewport: 'width=device-width, initial-scale=1',
   themeColor: '#74b9ff',
   manifest: '/manifest.json'
@@ -25,7 +25,9 @@ export default function RootLayout({
       <body className={inter.className}>
         <ErrorBoundary>
           {children}
+
         </ErrorBoundary>
+
       </body>
     </html>
   );

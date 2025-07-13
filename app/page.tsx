@@ -908,7 +908,7 @@ export default function Home() {
               }}
               transition={{ type: "spring", stiffness: 300 }}
             >
-              Weather App
+              Ghonchu Weather App
             </motion.h1>
             <div className="flex items-center gap-4">
               <motion.div
@@ -1146,6 +1146,57 @@ export default function Home() {
             </motion.div>
           )}
         </div>
+        <footer className="mt-10 px-6 py-6 w-full text-center bg-gradient-to-br from-[#1e293b]/60 to-[#0f172a]/60 backdrop-blur-lg border-t border-white/10 rounded-t-2xl shadow-inner">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-white/80">
+            <div>
+              <p>
+                Made with <span className="text-pink-500">❤️</span> by{" "}
+                <a
+                  href={process.env.NEXT_PUBLIC_PORTFOLIO_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-cyan-400 hover:underline"
+                >
+                  Abhishek DEY
+                </a>
+              </p>
+            </div>
+
+            <div className="flex gap-4">
+              <a
+                href={process.env.NEXT_PUBLIC_PORTFOLIO_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-white"
+              >
+                Portfolio
+              </a>
+              <a
+                href="https://github.com/Abhishek20110"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-white"
+              >
+                GitHub
+              </a>
+              <a
+                href="https://www.linkedin.com/in/abhishek-dey-059b781b9/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-white"
+              >
+                LinkedIn
+              </a>
+            </div>
+
+            <div>
+              <p className="text-xs text-white/50">
+                © {new Date().getFullYear()} Ghonchu Weather. All rights reserved.
+              </p>
+            </div>
+          </div>
+        </footer>
+
 
         <LocationPermissionDialog
           isOpen={showLocationDialog}

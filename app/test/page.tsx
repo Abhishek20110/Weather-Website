@@ -195,15 +195,15 @@ export default function TestPage() {
         transition: { duration: 5, repeat: Infinity, ease: "easeInOut" }
       }
     };
-    
+
     return animations[selectedWeather] || animations.sunny;
   };
 
   const renderWeatherParticles = () => {
-    const particleCount = selectedWeather === 'stormy' ? 50 : 
-                         selectedWeather === 'rainy' ? 35 : 
-                         selectedWeather === 'snowy' ? 25 : 20;
-    
+    const particleCount = selectedWeather === 'stormy' ? 50 :
+      selectedWeather === 'rainy' ? 35 :
+        selectedWeather === 'snowy' ? 25 : 20;
+
     switch (selectedWeather) {
       case 'sunny':
         return (
@@ -311,7 +311,7 @@ export default function TestPage() {
                 }}
               />
             ))}
-            
+
             {/* Realistic raindrops with light reflection */}
             {[...Array(particleCount)].map((_, i) => (
               <motion.div
@@ -335,7 +335,7 @@ export default function TestPage() {
                 }}
               />
             ))}
-            
+
             {/* Ground splash effects */}
             {[...Array(5)].map((_, i) => (
               <motion.div
@@ -562,7 +562,7 @@ export default function TestPage() {
                 }}
               />
             ))}
-            
+
             {/* Lightning bolts with dramatic illumination */}
             <motion.div
               className="absolute inset-0 pointer-events-none"
@@ -583,7 +583,7 @@ export default function TestPage() {
                 repeatDelay: Math.random() * 4 + 2,
               }}
             />
-            
+
             {/* Lightning flash overlay */}
             <motion.div
               className="absolute inset-0 bg-blue-100/30 pointer-events-none"
@@ -596,7 +596,7 @@ export default function TestPage() {
                 repeatDelay: Math.random() * 6 + 3,
               }}
             />
-            
+
             {/* Jagged lightning bolt */}
             <motion.svg
               className="absolute top-10 left-1/2 transform -translate-x-1/2 pointer-events-none"
@@ -628,7 +628,7 @@ export default function TestPage() {
                 fill="none"
               />
             </motion.svg>
-            
+
             {/* Heavy rain with lightning illumination */}
             {[...Array(particleCount)].map((_, i) => (
               <motion.div
@@ -653,7 +653,7 @@ export default function TestPage() {
                 }}
               />
             ))}
-            
+
             {/* Ground impact splashes */}
             {[...Array(8)].map((_, i) => (
               <motion.div
@@ -764,7 +764,7 @@ export default function TestPage() {
 
   return (
     <ErrorBoundary>
-      <motion.div 
+      <motion.div
         style={containerStyle}
         className="relative overflow-hidden"
       >
@@ -780,9 +780,9 @@ export default function TestPage() {
             transition={{ duration: 0.5 }}
             className="flex items-center justify-between mb-8"
           >
-            <motion.h1 
+            <motion.h1
               className="text-3xl font-bold text-white"
-              whileHover={{ 
+              whileHover={{
                 scale: 1.05,
                 textShadow: "0px 0px 8px rgba(255,255,255,0.8)"
               }}
@@ -894,7 +894,7 @@ export default function TestPage() {
                     className="text-white border-white/30 hover:bg-white/20 bg-white/10 backdrop-blur-sm transition-all duration-300"
                   >
                     <motion.div
-                      animate={{ 
+                      animate={{
                         scale: [1, 1.2, 1],
                         rotate: [0, 10, -10, 0]
                       }}
@@ -923,7 +923,7 @@ export default function TestPage() {
               </div>
 
               <WeatherCard weather={mockWeather} />
-              
+
               <ForecastSection forecast={mockForecast} />
             </motion.div>
           )}
@@ -1001,6 +1001,56 @@ export default function TestPage() {
           </motion.div>
         </div>
       </motion.div>
+      <footer className="mt-10 px-6 py-6 w-full text-center bg-gradient-to-br from-[#1e293b]/60 to-[#0f172a]/60 backdrop-blur-lg border-t border-white/10 rounded-t-2xl shadow-inner">
+        <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-white/80">
+          <div>
+            <p>
+              Made with <span className="text-pink-500">❤️</span> by{" "}
+              <a
+                href={process.env.NEXT_PUBLIC_PORTFOLIO_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-cyan-400 hover:underline"
+              >
+                Abhishek DEY
+              </a>
+            </p>
+          </div>
+
+          <div className="flex gap-4">
+            <a
+              href={process.env.NEXT_PUBLIC_PORTFOLIO_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-white"
+            >
+              Portfolio
+            </a>
+            <a
+              href="https://github.com/Abhishek20110"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-white"
+            >
+              GitHub
+            </a>
+            <a
+              href="https://www.linkedin.com/in/abhishek-dey-059b781b9/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-white"
+            >
+              LinkedIn
+            </a>
+          </div>
+
+          <div>
+            <p className="text-xs text-white/50">
+              © {new Date().getFullYear()} Ghonchu Weather. All rights reserved.
+            </p>
+          </div>
+        </div>
+      </footer>
     </ErrorBoundary>
   );
 }
