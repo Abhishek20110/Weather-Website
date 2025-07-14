@@ -29,7 +29,7 @@ A comprehensive weather application built with Next.js 14+ and the OpenWeatherMa
 
 1. **Clone the repository**
    ```bash
-   git clone <repository-url>
+   git clone <[repository-url](https://github.com/Abhishek20110/Weather-Website)>
    cd weather-app
    ```
 
